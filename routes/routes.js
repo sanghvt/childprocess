@@ -1,27 +1,27 @@
-// JSON data
-const users = [{
-        id: 1,
-        name: "Richard Hendricks",
-        email: "richard@piedpiper.com",
-    },
-    {
-        id: 2,
-        name: "Bertram Gilfoyle",
-        email: "gilfoyle@piedpiper.com",
-    },
-];
-
+const { exec } = require("child_process");
 // Router
 const router = app => {
-    app.get('/', (request, response) => {
-        response.send({
-            message: 'Node.js and Express REST API'
+    app.post('/CD-Event', (request, response) => {
+        exec("ls -la", (error, stdout, stderr) => {
+            if (error) {
+                response.send({
+                    message: `error: ${error.message}`
+                });
+                return;
+            }
+            if (stderr) {
+                response.send({
+                    message: `stderr: ${stderr}`
+                });
+                return;
+            }
+            response.send({
+                message: `stdout: ${stdout}`
+            });
         });
     });
 
-    app.get('/users', (request, response) => {
-        response.send(users);
-    });
+
 }
 
 // Export the router
